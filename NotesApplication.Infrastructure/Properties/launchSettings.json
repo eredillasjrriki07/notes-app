@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "NotesApplication.Infrastructure": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "NOTES_DB": "test"
+      }
+    }
+  }
+}
