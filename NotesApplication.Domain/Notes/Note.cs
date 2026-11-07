@@ -33,7 +33,6 @@ public sealed class Note : Entity, IDomainEventCarrier
         note.SetDetails(title, Clean(content));
         note._events.Add(new NoteCreatedEvent(note.Id, note.Title, note.Content));
         return note;
-        
     }
 
     private void SetDetails(NoteTitle title, string content)

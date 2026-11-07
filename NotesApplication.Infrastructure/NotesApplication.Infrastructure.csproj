@@ -17,12 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NotesApplication.Domain\NotesApplication.Domain.csproj" />
-    <ProjectReference Include="..\NotesApplicaton.Application\NotesApplicaton.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\Repositories\" />
-    <Folder Include="Persistence\Queries\" />
+    <ProjectReference Include="..\NotesApplicaton.Application\NotesApplication.Application.csproj" />
   </ItemGroup>
 
 </Project>
