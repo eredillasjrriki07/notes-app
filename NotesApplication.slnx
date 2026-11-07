@@ -2,5 +2,5 @@
   <Project Path="NotesApplication.Api/NotesApplication.Api.csproj" />
   <Project Path="NotesApplication.Domain/NotesApplication.Domain.csproj" />
   <Project Path="NotesApplication.Infrastructure/NotesApplication.Infrastructure.csproj" />
-  <Project Path="NotesApplicaton.Application/NotesApplicaton.Application.csproj" />
+  <Project Path="NotesApplicaton.Application/NotesApplication.Application.csproj" />
 </Solution>

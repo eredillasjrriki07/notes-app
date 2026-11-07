@@ -1,5 +1,5 @@
 ﻿using NotesApplication.Domain.Common;
-using NotesApplicaton.Application.Common;
+using NotesApplication.Application.Common;
 using System.Text.Json;
 
 namespace NotesApplication.Infrastructure.Persistence.Events;

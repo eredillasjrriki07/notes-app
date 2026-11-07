@@ -1,4 +1,4 @@
-﻿namespace NotesApplicaton.Application.Common;
+﻿namespace NotesApplication.Application.Common;
 
 public interface IDomainEventRecorder
 {
