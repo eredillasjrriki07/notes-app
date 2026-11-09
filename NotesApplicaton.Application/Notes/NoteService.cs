@@ -57,7 +57,7 @@ public sealed class NoteService(
         foreach (var domainEvent in note.DomainEvents)
         {
             var (eventType, payload) = NoteEvents.For(domainEvent);
-            _recorder.Record(eventType, NoteEventTypes.NoteCreated, NoteEvents.EntityId(note.Id), payload);
+            _recorder.Record(eventType, NoteEventTypes.NoteEntityType, NoteEvents.EntityId(note.Id), payload);
         }
         note.ClearDomainEvents();
     }
