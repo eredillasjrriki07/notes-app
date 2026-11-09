@@ -44,10 +44,7 @@ public sealed class Note : Entity, IDomainEventCarrier
 
     private static string? Clean(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 
-    public void ClearDomainEvents()
-    {
-        throw new NotImplementedException();
-    }
+    public void ClearDomainEvents() => _events.Clear();
 }
 public static class NoteRules 
 {
