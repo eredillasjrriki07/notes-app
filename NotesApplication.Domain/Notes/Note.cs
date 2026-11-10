@@ -35,6 +35,21 @@ public sealed class Note : Entity, IDomainEventCarrier
         return note;
     }
 
+    public void Update(NoteTitle title, string content)
+    {
+        EnsureNotArchived();
+        var cleaned = Clean(content);
+
+        var changes = new List<NoteFieldChanged>(2);
+        Track(changes, "title", Title, title.Value);
+        Track(changes, "content", Content, content);
+        if (changes.Count == 0)
+            return;
+
+        SetDetails(title, cleaned);
+        _events.Add(new NoteUpdatedEvent(Id, Title, changes));
+    }
+
     private void SetDetails(NoteTitle title, string content)
     {
         Rule.Require(content is null || content.Length <= ContentLength, NoteRules.ContentTooLong);
@@ -42,11 +57,20 @@ public sealed class Note : Entity, IDomainEventCarrier
         Content = content;
     }
 
+    private void EnsureNotArchived() => Rule.Require(!IsArchived, NoteRules.Archived);
+
     private static string? Clean(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 
     public void ClearDomainEvents() => _events.Clear();
+
+    private static void Track(List<NoteFieldChanged> changes, string field, string? from, string? to)
+    {
+        if (!string.Equals(from, to, StringComparison.Ordinal))
+            changes.Add(new NoteFieldChanged(field, from, to));
+    }
 }
 public static class NoteRules 
 {
+    public const string Archived = "This note was archived.";
     public static readonly string ContentTooLong = $"Content must be {Note.ContentLength} characters or fewer.";
 }
