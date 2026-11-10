@@ -39,9 +39,28 @@ public sealed class NoteService(
         return await ReadBackAsync(note.Id, ct);
     }
 
-    public Task<NoteDto> UpdateAsync(Guid id, UpdateNoteRequestDto request, CancellationToken ct = default)
+    public async Task<NoteDto> UpdateAsync(Guid id, UpdateNoteRequestDto request, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        await _updateValidator.ValidateAndThrowDomainAsync(request);
+        var title = new NoteTitle(request.Title);
+        var content = request.Content;
+
+        var changed = await _uow.ExecuteAsync(async token =>
+        {
+            var note = await LoadAsync(id, token);
+            _notes.ExpectVersion(note, request.Version);
+
+            note.Update(title, content);
+
+            // Saving the same details raises nothing: no event, no write, and no log line.
+            var any = note.DomainEvents.Count > 0;
+            RecordEvent(note);
+            return any;
+        }, ct);
+
+        if (changed)
+            _logger.LogInformation("Note {NoteId} updated", id);
+        return await ReadBackAsync(id, ct);
     }
 
     private async Task<Note> LoadAsync(Guid id, CancellationToken ct)
