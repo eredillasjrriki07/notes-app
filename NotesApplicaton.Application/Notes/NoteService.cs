@@ -5,9 +5,12 @@ using NotesApplication.Application.Common.Exceptions;
 using NotesApplication.Application.Events;
 using NotesApplication.Application.Notes.Dtos;
 using NotesApplication.Application.Notes.RequestDtos;
+using NotesApplication.Application.Outbox;
 using NotesApplication.Domain.Common;
 using NotesApplication.Domain.Notes;
+using NotesApplication.Domain.Outbox;
 using NotesApplication.Domain.Repositories;
+using System.Text.Json;
 
 namespace NotesApplication.Application.Notes;
 
@@ -15,6 +18,7 @@ public sealed class NoteService(
     ILogger<NoteService> _logger,
     INoteUnitOfWork _uow,
     INoteRepository _notes,
+    IOutboxRepository _outbox,
     INoteQueries _queries,
     IDomainEventRecorder _recorder,
     IClock _clock,
@@ -32,6 +36,15 @@ public sealed class NoteService(
             var created = Note.Create(title, request.Content);
             _notes.Add(created);
             RecordEvent(created);
+
+            // same unit of work: the note, its event row and the outbox row commit together
+            var payload = new { id = created.Id, title = created.Title};
+            _outbox.Add(OutboxMessage.Create(
+                NoteEventTypes.NoteCreatedEmail,
+                JsonSerializer.Serialize(payload),
+                DateTime.UtcNow
+            ));
+
             return Task.FromResult(created);
         }, ct);
 

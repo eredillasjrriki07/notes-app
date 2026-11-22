@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using NotesApplication.Api.Middleware;
 using NotesApplication.Api.Models;
 using NotesApplication.Infrastructure;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,7 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(o => o.SwaggerEndpoint("/openapi/v1.json", "Notes API v1"));
+    app.MapScalarApiReference();
 }
 
 app.MapControllers();

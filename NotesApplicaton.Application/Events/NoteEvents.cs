@@ -34,4 +34,5 @@ public static class NoteEventTypes
     public const string NoteEntityType = "Note";
     public const string NoteCreated = "notesapplication.note.created";
     public const string NoteUpdated = "notesapplication.note.updated";
+    public const string NoteCreatedEmail = "email.note-created";
 }

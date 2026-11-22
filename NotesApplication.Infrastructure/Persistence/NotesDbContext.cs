@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NotesApplication.Domain.Notes;
+using NotesApplication.Domain.Outbox;
 using NotesApplication.Infrastructure.Persistence.Configurations;
 using NotesApplication.Infrastructure.Persistence.Events;
 
@@ -8,6 +9,7 @@ namespace NotesApplication.Infrastructure.Persistence;
 public class NotesDbContext(DbContextOptions<NotesDbContext> options) : DbContext(options)
 {
     public DbSet<Note> Notes => Set<Note>();
+    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
     public DbSet<DomainEventRow> DomainEvents => Set<DomainEventRow>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
